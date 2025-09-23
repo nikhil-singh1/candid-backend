@@ -26,3 +26,5 @@ app.use('/api/contact', require('./routes/contact'));
 
 // app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
+
+module.exports = app;
