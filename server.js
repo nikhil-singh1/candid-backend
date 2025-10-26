@@ -22,6 +22,7 @@ app.use('/api/posts', require('./routes/posts'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/case-study', require('./routes/case-study'));
 
 
 // const PORT = process.env.PORT || 5000;
@@ -30,4 +31,5 @@ app.use('/api/contact', require('./routes/contact'));
 
 
 module.exports = app;
+
 
