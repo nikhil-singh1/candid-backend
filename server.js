@@ -24,6 +24,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/case-study', require('./routes/case-study'));
 app.use('/api/rfp', require('./routes/rfp'));
+app.use("/api/parse-doc", require("./routes/parseDoc"));
 
 
 // const PORT = process.env.PORT || 5000;
