@@ -65,7 +65,6 @@
 
 // module.exports = router;
 
-
 const express = require("express");
 const multer = require("multer");
 const mammoth = require("mammoth");
@@ -90,11 +89,21 @@ router.post("/", upload.single("file"), async (req, res) => {
         pdfParser.parseBuffer(file.buffer);
       });
 
-      text = data?.formImage?.Pages?.map((page) =>
-        page.Texts.map((t) =>
-          decodeURIComponent(t.R.map(r => r.T).join(""))
-        ).join(" ")
-      ).join("\n\n");
+      const pages = data?.formImage?.Pages;
+
+      if (!pages || !Array.isArray(pages)) {
+        return res.status(400).json({
+          msg: "Unable to extract text from PDF. Unsupported PDF format.",
+        });
+      }
+
+      text = pages
+        .map((page) =>
+          page.Texts.map((t) =>
+            decodeURIComponent(t.R.map((r) => r.T).join(""))
+          ).join(" ")
+        )
+        .join("\n\n");
     }
 
     else if (
@@ -103,6 +112,11 @@ router.post("/", upload.single("file"), async (req, res) => {
     ) {
       const result = await mammoth.extractRawText({ buffer: file.buffer });
       text = result.value;
+    }
+
+    // SAFETY CHECK
+    if (!text || typeof text !== "string") {
+      return res.status(400).json({ msg: "No readable text found in document" });
     }
 
     const paragraphs = text
